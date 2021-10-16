@@ -13,5 +13,11 @@ const initQuestions = [
 ]
 
 inquirer.prompt(initQuestions)
+    // Response is written to team manager html 
     .then((response) => {})
+    // Then needs to trigger an inquirer prompt (list of options) which calls a polymorphic function:
+        // if (input = engineer) {trigger inquirer prompts for new EngineerMod} else etc. 
+        // After user input, need to return to minion, add callback function at the end of every user input to trigger the inquirer menu
+            // Each input gets concatenated to a template literal called ${content} which is sandwiched between the header and footer of the html file
+        // if (input = finished), writeFile('index.html', ${full html}, (err) => {return err})
     .catch((error) => {})
