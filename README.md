@@ -19,6 +19,10 @@ If not:
 npm i inquirer
 ```
 ## Demonstration
+* [Functionality of Project](https://watch.screencastify.com/v/brUOq4Odp4YVc7pU7te8)
+
+* [Running Tests](https://watch.screencastify.com/v/ueqlf7Sm2CEhTlDofTYl)
+
 ## Testing
 Use [Jest](https://jestjs.io/) to test the functionality of this project
 ```
