@@ -84,7 +84,6 @@ const team = [];
 const init = () => {
     inquirer
         .prompt(initQuestions)
-        // Response is written to team manager html
         .then((r) => {
             let newManager = new Manager(
                 r.managerName,
@@ -115,7 +114,6 @@ const menuInit = () => {
                             r.engEmail,
                             r.engGit
                         );
-                        console.log(newEng);
                         team.push(newEng);
                         menuInit();
                     })
@@ -131,14 +129,12 @@ const menuInit = () => {
                             r.intEmail,
                             r.intSchool
                         );
-                        console.log(newInt);
                         team.push(newInt);
                         menuInit();
                     })
                     .catch();
             }
             if (response.menuSelect === "Finish and Exit") {
-                console.log(team);
                 finish(team);
             }
         })
@@ -146,6 +142,7 @@ const menuInit = () => {
             console.log("Something went wrong, please try again.");
         });
 };
+
 const finish = (team) => {
     fs.writeFile("./dist/team.html", pageTemplate(team), (err) => {
         if (err) {
