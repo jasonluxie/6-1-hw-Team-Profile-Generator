@@ -27,8 +27,50 @@ const initQuestions = [
         name: "managerOffice",
     },
 ];
-const engQuestions = [{}];
-const intQuestions = [];
+const engQuestions = [
+    {
+        type: "input",
+        message: "What is the name of the engineer?",
+        name: "engName",
+    },
+    {
+        type: "input",
+        message: "What is the employee ID of the engineer",
+        name: "engID",
+    },
+    {
+        type: "input",
+        message: "What is the email address of the engineer?",
+        name: "engEmail",
+    },
+    {
+        type: "input",
+        message: "What is the github username of the engineer?",
+        name: "engGit",
+    },
+];
+const intQuestions = [
+    {
+        type: "input",
+        message: "What is the name of the intern?",
+        name: "intName",
+    },
+    {
+        type: "input",
+        message: "What is the employee ID of the intern",
+        name: "intID",
+    },
+    {
+        type: "input",
+        message: "What is the email address of the intern?",
+        name: "intEmail",
+    },
+    {
+        type: "input",
+        message: "What school is the intern from?",
+        name: "intSchool",
+    },
+];
 const menu = [
     {
         type: "list",
@@ -38,7 +80,7 @@ const menu = [
         choices: ["Engineer", "Intern", "Finish and Exit"],
     },
 ];
-
+const team = [];
 const init = () => {
     inquirer
         .prompt(initQuestions)
@@ -50,16 +92,60 @@ const init = () => {
                 r.managerEmail,
                 r.managerOffice
             );
-            console.log(newManager);
+            team.push(newManager);
         })
-        // Then needs to trigger an inquirer prompt (list of options) which calls a polymorphic function:
-        // if (input = engineer) {trigger inquirer prompts for new EngineerMod} else etc.
-        // After user input, need to return to minion, add callback function at the end of every user input to trigger the inquirer menu
-        // Each input gets concatenated to a template literal called ${content} which is sandwiched between the header and footer of the html file
-        // if (input = finished), writeFile('index.html', ${full html}, (err) => {return err})
-        .catch((error) => {});
+        .then(() => {
+            menuInit();
+        })
+        .catch(() => {
+            console.log("Something went wrong, please try again");
+        });
 };
-
+const menuInit = () => {
+    inquirer
+        .prompt(menu)
+        .then((response) => {
+            if (response.menuSelect === "Engineer") {
+                inquirer
+                    .prompt(engQuestions)
+                    .then((r) => {
+                        let newEng = new Engineer(
+                            r.engName,
+                            r.engID,
+                            r.engEmail,
+                            r.engGit
+                        );
+                        console.log(newEng);
+                        team.push(newEng);
+                        menuInit();
+                    })
+                    .catch();
+            }
+            if (response.menuSelect === "Intern") {
+                inquirer
+                    .prompt(intQuestions)
+                    .then((r) => {
+                        let newInt = new Intern(
+                            r.intName,
+                            r.intID,
+                            r.intEmail,
+                            r.intSchool
+                        );
+                        console.log(newInt);
+                        team.push(newInt);
+                        menuInit();
+                    })
+                    .catch();
+            }
+            if (response.menuSelect === "Finish and Exit") {
+                console.log(team);
+                finish(team);
+            }
+        })
+        .catch(() => {
+            console.log("Something went wrong, please try again.");
+        });
+};
 const finish = (team) => {
     fs.writeFile("./dist/team.html", pageTemplate(team), (err) => {
         if (err) {
@@ -68,8 +154,12 @@ const finish = (team) => {
     });
 };
 
-const menu = () => {
-    inquirer.prompt(menu).then().catch();
-};
+init();
 
-// init();
+// const engInit = () => {
+//     inquirer.prompt(engQuestions).then().catch();
+// }
+
+// const intInit = () => {
+//     inquirer.prompt(intQuestions).then().catch();
+// }
